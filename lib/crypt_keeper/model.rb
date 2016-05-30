@@ -129,7 +129,7 @@ module CryptKeeper
       end
 
       def scoping_strategy
-        if ::ActiveRecord.respond_to?(:version) && ::ActiveRecord.version.segments[0] == 4
+        if ::ActiveRecord.respond_to?(:version) && ::ActiveRecord.version.segments[0] >= 4
           all
         else
           scoped
