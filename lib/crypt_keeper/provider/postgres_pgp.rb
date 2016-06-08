@@ -38,6 +38,10 @@ module CryptKeeper
       def search(records, field, criteria)
         records.where("(pgp_sym_decrypt(cast(#{field} AS bytea), ?) = ?)", key, criteria)
       end
+
+      def search_partial(records, field, criteria)
+        records.where("(pgp_sym_decrypt(cast(#{field} AS bytea), ?) ILIKE ?)", key, criteria)
+      end
     end
   end
 end

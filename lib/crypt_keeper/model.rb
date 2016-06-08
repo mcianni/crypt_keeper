@@ -82,6 +82,15 @@ module CryptKeeper
         end
       end
 
+      def search_by_partial(field, criteria)
+        if crypt_keeper_fields.include?(field.to_sym)
+          encryptor = encryptor_klass.new(crypt_keeper_options)
+          encryptor.search_partial(scoping_strategy, field.to_s, criteria)
+        else
+          raise "#{field} is not a crypt_keeper field"
+        end
+      end
+
       # Public: Encrypt a table for the first time.
       def encrypt_table!
         enc       = encryptor_klass.new(crypt_keeper_options)
