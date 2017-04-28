@@ -15,7 +15,7 @@ is a simple class that does 3 things.
 Note: Any options defined using `crypt_keeper` will be passed to `new` as a
 hash.
 
-You can see an AES example [here](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/aes_new.rb).
+You can see an example [here](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/active_support.rb).
 
 ## Why?
 
@@ -27,7 +27,7 @@ simple that *just works*.
 
 ```ruby
 class MyModel < ActiveRecord::Base
-  crypt_keeper :field, :other_field, :encryptor => :aes_new, :key => 'super_good_password', salt: 'salt'
+  crypt_keeper :field, :other_field, encryptor: :active_support, key: 'super_good_password', salt: 'salt'
 end
 
 model = MyModel.new(field: 'sometext')
@@ -53,7 +53,7 @@ You can force an encoding on the plaintext before encryption and after decryptio
 
 ```ruby
 class MyModel < ActiveRecord::Base
-  crypt_keeper :field, :other_field, :encryptor => :aes_new, :key => 'super_good_password', salt: 'salt', :encoding => 'UTF-8'
+  crypt_keeper :field, :other_field, encryptor: :active_support, key: 'super_good_password', salt: 'salt', encoding: 'UTF-8'
 end
 
 model = MyModel.new(field: 'Tromsø')
@@ -68,7 +68,7 @@ If you are working with an existing table you would like to encrypt, you must us
 
 ```ruby
 class MyExistingModel < ActiveRecord::Base
-  crypt_keeper :field, :other_field, :encryptor => :aes_new, :key => 'super_good_password', salt: 'salt'
+  crypt_keeper :field, :other_field, encryptor: :active_support, key: 'super_good_password', salt: 'salt'
 end
 
 MyExistingModel.encrypt_table!
@@ -78,10 +78,10 @@ Running `encrypt_table!` will encrypt all rows in the database using the encrypt
 
 ## Supported Available Encryptors
 
-There are four supported encryptors: `aes_new`, `mysql_aes_new`, `postgres_pgp`, `postgres_pgp_public_key`.
+There are four supported encryptors: `active_support`, `mysql_aes_new`, `postgres_pgp`, `postgres_pgp_public_key`.
 
-* [AES New](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/aes_new.rb)
-  * Encryption is peformed using AES-256 via OpenSSL.
+* [ActiveSupport](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/active_support.rb)
+  * Encryption is performed using [ActiveSupport::MessageEncryptor](http://api.rubyonrails.org/classes/ActiveSupport/MessageEncryptor.html)
   * Passphrases are derived using [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2)
 
 * [MySQL AES New](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/mysql_aes_new.rb)
@@ -111,8 +111,8 @@ There are four supported encryptors: `aes_new`, `mysql_aes_new`, `postgres_pgp`,
 ## Searching
 Searching ciphertext is a complex problem that varies depending on the encryption algorithm you choose. All of the bundled providers include search support, but they have some caveats.
 
-* AES
-  * The Ruby implementation of AES uses a random initialization vector. The same plaintext encrypted multiple times will have different output each time for the ciphertext. Since this is the case, it is not possible to search leveraging the database. Database rows will need to be filtered in memory. It is suggested that you use a scope or ActiveRecord batches to narrow the results before seaching them.
+* ActiveSupport::MessageEncryptor
+  * ActiveSupport's MessageEncryptor uses a random initialization vector when generating keys. The same plaintext encrypted multiple times will have different output each time for the ciphertext. Since this is the case, it is not possible to search leveraging the database. Database rows will need to be filtered in memory. It is suggested that you use a scope or ActiveRecord batches to narrow the results before seaching them.
 
 * Mysql AES
  * Surprisingly, MySQL's implementation of AES does not use a random initialization vector. The column containing the ciphertext can be indexed and searched quickly.
@@ -157,7 +157,7 @@ as a string or an underscored symbol
 
 ```ruby
 class MyModel < ActiveRecord::Base
-  crypt_keeper :field, :other_field, :encryptor => :my_encryptor, :key => 'super_good_password'
+  crypt_keeper :field, :other_field, encryptor: :my_encryptor, key: 'super_good_password'
 end
 ```
 
