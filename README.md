@@ -15,7 +15,7 @@ is a simple class that does 3 things.
 Note: Any options defined using `crypt_keeper` will be passed to `new` as a
 hash.
 
-You can see an AES example [here](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/aes.rb).
+You can see an AES example [here](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/aes_new.rb).
 
 ## Why?
 
@@ -108,19 +108,6 @@ There are four supported encryptors: `aes_new`, `mysql_aes_new`, `postgres_pgp`,
   * Accepts a public and private_key. The private key is optional. If the private key is not present the ciphertext value is returned instead of the plaintext. This allows you to keep the private key off certain servers. Encryption is possible with only a public key. Any server that needs access to the plaintext will need the private key.
   * Passphrases are hashed by PostgresSQL itself using a [String2Key (S2K)](http://www.postgresql.org/docs/9.2/static/pgcrypto.html) algorithm. This is rather similar to crypt() algorithms — purposefully slow and with random salt — but it produces a full-length binary key.
 
-## Deprecated Encryptors
-These encryptors are now deprecated and should be migrated from as soon as possible using the included `bin/crypt_keeper` script.
-
-* [AES Legacy](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/aes.rb) *DEPRECATED*
-  * Encryption is peformed using AES-256 via OpenSSL.
-  * [How to migrate to AES New](https://github.com/jmazzi/crypt_keeper/wiki/AES-Legacy-Migration-Instructions)
-
-* [MySQL AES Legacy](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/provider/mysql_aes.rb) *DEPRECATED*
-  * Encryption is peformed MySQL's native AES functions.
-  * ActiveRecord logs are [automatically](https://github.com/jmazzi/crypt_keeper/blob/master/lib/crypt_keeper/log_subscriber/mysql_aes.rb)
-    filtered for you to protect senitive data from being logged.
-  * [How to migrate to MySQL AES New](https://github.com/jmazzi/crypt_keeper/wiki/MysqlAes-Legacy-Migration-Instructions)
-
 ## Searching
 Searching ciphertext is a complex problem that varies depending on the encryption algorithm you choose. All of the bundled providers include search support, but they have some caveats.
 
@@ -144,12 +131,13 @@ Model.where(something: 'blah').search_by_plaintext(:field, 'searchstring')
 ## Creating your own encryptor
 
 Creating your own encryptor is easy. All you have to do is create a class
-under the `CryptKeeper::Provider` namespace, like this:
+under the `CryptKeeper::Provider` namespace, and inherit from the `Base` encryptor,
+like this:
 
 ```ruby
 module CryptKeeper
   module Provider
-    class MyEncryptor
+    class MyEncryptor < Base
       def initialize(options = {})
       end
 
@@ -175,11 +163,11 @@ end
 
 ## Requirements
 
-CryptKeeper has been tested against ActiveRecord 3.1, 3.2, 4.0, 4.1, 4.2 using ruby
-1.9.3, 2.0.0 and 2.1.1
+CryptKeeper has been tested against ActiveRecord 4.2 and 5.0 using Ruby
+2.1.10, 2.2.5 and 2.3.1.
 
-ActiveRecord 4.0 is supported starting with v0.11.0.
-ActiveRecord 4.1 is supported starting with v0.16.0.
+ActiveRecord 4.2 is supported starting with v0.19.0.
+ActiveRecord 5.0 is supported starting with v0.23.0.
 
 ## Installation
 

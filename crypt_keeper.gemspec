@@ -16,18 +16,23 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = CryptKeeper::VERSION
 
+<<<<<<< HEAD
   gem.add_runtime_dependency 'activerecord',  '>= 3.1', '< 5.1'
   gem.add_runtime_dependency 'activesupport', '>= 3.1', '< 5.1'
+=======
+  gem.add_runtime_dependency 'activerecord',  '>= 4.2', '< 5.2'
+  gem.add_runtime_dependency 'activesupport', '>= 4.2', '< 5.2'
+>>>>>>> 2e4ccd340d33929fcb20022d78b3f2ab8abe8581
   gem.add_runtime_dependency 'aes',           '~> 0.5.0'
   gem.add_runtime_dependency 'armor',         '~> 0.0.2'
 
-  gem.add_development_dependency 'rspec',       '~> 2.14.0'
+  gem.add_development_dependency 'rspec',       '~> 3.5.0'
   gem.add_development_dependency 'guard',       '~> 2.6.1'
   gem.add_development_dependency 'guard-rspec', '~> 4.2.9'
   gem.add_development_dependency 'rake',        '~> 10.3.1'
   gem.add_development_dependency 'rb-fsevent',  '~> 0.9.1'
   gem.add_development_dependency 'coveralls'
-  gem.add_development_dependency 'appraisal',   '~> 1.0.0'
+  gem.add_development_dependency 'appraisal',   '~> 2.1.0'
 
   if RUBY_PLATFORM == 'java'
     gem.add_development_dependency 'jruby-openssl', '~> 0.7.7'
@@ -36,7 +41,7 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'activerecord-jdbcmysql-adapter'
   else
     gem.add_development_dependency 'sqlite3'
-    gem.add_development_dependency 'pg', '~> 0.17.1'
+    gem.add_development_dependency 'pg', '~> 0.18.0'
     gem.add_development_dependency 'mysql2', '~> 0.3.11'
   end
 end

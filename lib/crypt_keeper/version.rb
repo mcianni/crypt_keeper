@@ -1,3 +1,3 @@
 module CryptKeeper
-  VERSION = "0.20.0"
+  VERSION = "1.1.1"
 end
