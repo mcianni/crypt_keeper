@@ -16,13 +16,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = CryptKeeper::VERSION
 
-<<<<<<< HEAD
-  gem.add_runtime_dependency 'activerecord',  '>= 3.1', '< 5.1'
-  gem.add_runtime_dependency 'activesupport', '>= 3.1', '< 5.1'
-=======
   gem.add_runtime_dependency 'activerecord',  '>= 4.2', '< 5.2'
   gem.add_runtime_dependency 'activesupport', '>= 4.2', '< 5.2'
->>>>>>> 2e4ccd340d33929fcb20022d78b3f2ab8abe8581
   gem.add_runtime_dependency 'aes',           '~> 0.5.0'
   gem.add_runtime_dependency 'armor',         '~> 0.0.2'
 
